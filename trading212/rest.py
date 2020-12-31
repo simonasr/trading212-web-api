@@ -534,3 +534,36 @@ class Trading212Rest:
 
         r.raise_for_status()
         return r.json()
+
+    def _history(self, session, start, end, limit, history_type):
+        api_url = self.get_rest_url(f'/rest/history/{history_type}')
+
+        date_format = r'%Y-%m-%dT%H:%M:%S.00Z'
+
+        params = {
+            'newerThan': time.strftime(date_format, time.localtime(start)),
+            'olderThan': time.strftime(date_format, time.localtime(end)),
+            'limit': limit
+        }
+
+        r = self.call_api(
+            session, 'get',
+            url=api_url,
+            headers=self.get_rest_headers(),
+            params=params
+        )
+
+        r.raise_for_status()
+        return r.json()
+
+    def _history_details(self, session, details_path):
+        api_url = self.get_rest_url(f'/rest/history/{details_path}')
+
+        r = self.call_api(
+            session, 'get',
+            url=api_url,
+            headers=self.get_rest_headers(),
+        )
+
+        r.raise_for_status()
+        return r.json()

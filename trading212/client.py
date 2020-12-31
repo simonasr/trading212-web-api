@@ -122,3 +122,9 @@ class Trading212Client(Trading212Rest):
 
         raise ValueError(
             f'account not found - {account_type} - {trading_type}')
+
+    def get_history(self, start, end, history_type='all', limit=20) -> dict:
+        return self._history(self.get_session(), start, end, limit, history_type)
+
+    def get_history_details(self, details_path) -> dict:
+        return self._history_details(self.get_session(), details_path)
